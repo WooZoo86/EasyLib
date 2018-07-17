@@ -3,10 +3,8 @@
 
 #pragma once
 
-#include "defines.h"
 #include <functional>
-#include <atlstr.h>
-#include <iostream>
+
 
 
 #define	ELIB_EXPORT
