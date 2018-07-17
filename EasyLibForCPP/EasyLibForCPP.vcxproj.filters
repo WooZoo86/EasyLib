@@ -50,7 +50,7 @@
     <ClCompile Include="FileMan.cpp">
       <Filter>FileMan</Filter>
     </ClCompile>
-    <ClCompile Include="DetroitDiesel.cpp">
+    <ClCompile Include="Algorithm\DetroitDiesel.cpp">
       <Filter>Algorithm</Filter>
     </ClCompile>
   </ItemGroup>

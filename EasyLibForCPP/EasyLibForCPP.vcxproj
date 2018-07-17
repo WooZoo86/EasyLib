@@ -158,7 +158,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DetroitDiesel.cpp" />
+    <ClCompile Include="Algorithm\DetroitDiesel.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="EasyLibForCPP.cpp" />
     <ClCompile Include="FileMan.cpp" />
