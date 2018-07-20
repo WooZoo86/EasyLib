@@ -18,10 +18,11 @@
 #define	tstring std::string
 #endif//_UNICODE
 
+
 #define SAFE_RELEASE_EX(p)	{if(p) p->Release();}
 
 
-typedef unsigned char U8;
+typedef unsigned char U8, UCHAR, BYTE, _BYTE;
 
 
 

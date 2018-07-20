@@ -4,7 +4,7 @@
 #pragma once
 
 #include <functional>
-
+#include <atlstr.h>
 
 
 #define	ELIB_EXPORT
