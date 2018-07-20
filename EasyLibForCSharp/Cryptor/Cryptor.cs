@@ -394,6 +394,89 @@ namespace EasyLibForCSharp.Cryptor
         private const byte HIGH_BYTE = 255;
     }
 
+    public interface IActionEncryptor
+    {
+        byte[] EncryptAction<SA>(byte[] key, byte[] vector, Action<StreamWriter> action) where SA : SymmetricAlgorithm, new();
+
+        byte[] EncryptAction(SymmetricAlgorithm sa, byte[] key, byte[] vector, Action<StreamWriter> action);
+
+        T DecryptAction<SA, T>(byte[] key, byte[] vector, byte[] bytes, Func<StreamReader, T> action) where SA : SymmetricAlgorithm, new();
+
+        T DecryptAction<T>(SymmetricAlgorithm sa, byte[] key, byte[] vector, byte[] bytes, Func<StreamReader, T> action);
+    }
+
+    public class ActionEncryptor : IActionEncryptor
+    {
+        public byte[] EncryptAction<SA>(byte[] key, byte[] vector, Action<StreamWriter> action) where SA : SymmetricAlgorithm, new()
+        {
+            byte[] result;
+            using (SA sa = Activator.CreateInstance<SA>())
+            {
+                result = this.EncryptAction(sa, key, vector, action);
+            }
+            return result;
+        }
+
+        public byte[] EncryptAction(SymmetricAlgorithm sa, byte[] key, byte[] vector, Action<StreamWriter> action)
+        {
+            sa.Key = key;
+            sa.IV = vector;
+            sa.Padding = PaddingMode.Zeros;
+            byte[] result;
+            using (ICryptoTransform cryptoTransform = sa.CreateEncryptor())
+            {
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    using (CryptoStream cryptoStream = new CryptoStream(memoryStream, cryptoTransform, CryptoStreamMode.Write))
+                    {
+                        using (StreamWriter streamWriter = new StreamWriter(cryptoStream))
+                        {
+                            action(streamWriter);
+                        }
+                    }
+                    result = memoryStream.ToArray();
+                }
+            }
+            return result;
+        }
+
+        public T DecryptAction<SA, T>(byte[] key, byte[] vector, byte[] bytes, Func<StreamReader, T> action) where SA : SymmetricAlgorithm, new()
+        {
+            T result;
+            using (SA sa = Activator.CreateInstance<SA>())
+            {
+                result = this.DecryptAction<T>(sa, key, vector, bytes, action);
+            }
+            return result;
+        }
+
+        public T DecryptAction<T>(SymmetricAlgorithm sa, byte[] key, byte[] vector, byte[] bytes, Func<StreamReader, T> action)
+        {
+            sa.Key = key;
+            sa.IV = vector;
+            sa.Padding = PaddingMode.Zeros;
+            T result;
+            using (ICryptoTransform cryptoTransform = sa.CreateDecryptor())
+            {
+                using (MemoryStream memoryStream = new MemoryStream(bytes))
+                {
+                    using (CryptoStream cryptoStream = new CryptoStream(memoryStream, cryptoTransform, CryptoStreamMode.Read))
+                    {
+                        using (StreamReader streamReader = new StreamReader(cryptoStream))
+                        {
+                            result = action(streamReader);
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
+        public ActionEncryptor()
+        {
+        }
+    }
+
     namespace Enums
     {
         public enum EncryptionType
