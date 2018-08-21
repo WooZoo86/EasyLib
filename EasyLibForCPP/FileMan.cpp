@@ -1,9 +1,10 @@
 #include "stdafx.h"
-#include "defines.h"
-#include "Interface.h"
 #include <regex>
 #include <io.h>
 #include <iostream>
+#include "defines.h"
+#include "Interface.h"
+
 
 
 
@@ -107,7 +108,7 @@ ELIB_API bool __stdcall ProcessDir(const TCHAR* dir, const TCHAR* filter, std::f
 	return ProcessDir(dir, filter, nullptr, callback);
 }
 
-
+#ifdef _AFXDLL
 bool __stdcall _ProcessDir(const CString dir, const CString filter, const CString regExpress, std::function<bool(const CString)> callback)
 {
 	if (!callback)
@@ -204,36 +205,37 @@ ELIB_API bool __stdcall ProcessDirEx(const CString dir, const CString filter, st
 	return _ProcessDir(dir, filter, "", callback);
 }
 
+#endif//!_AFXDLL
 
-ELIB_API bool __stdcall ProcessStorageFile(CString file, std::function<bool(IStorage *)>callback)
+ELIB_API bool __stdcall ProcessStorageFile(const TCHAR* file, std::function<bool(IStorage *)>callback)
 {
-	MYCOUT << _T(" ProcessBMF file: ") << file.GetBuffer(0) << std::endl;
+	SAFE_ASSERT_POINTER(file, false);
+	SAFE_ASSERT_POINTER(callback, false);
 
 	HRESULT hr = S_FALSE;
 
-	USES_CONVERSION;
-	LPCOLESTR path = T2COLE(file);
-	hr = ::StgIsStorageFile(path);
+	hr = ::StgIsStorageFile(file);
 	if (FAILED(hr))
 	{
-		MYCOUT << file << _T(" Is not a StorageFile!") << std::endl;
+		MYDEBUGOUT(file _T(" Is not a StorageFile!"));
+		_sntprintf()
 		return false;
 	}
 
 	IStorage *pStgRoot = nullptr;
-	hr = ::StgOpenStorage(path, NULL, STGM_SHARE_EXCLUSIVE, 0, 0, &pStgRoot);
+	hr = ::StgOpenStorage(file, nullptr, STGM_SHARE_EXCLUSIVE, nullptr, 0, &pStgRoot);
 	if (FAILED(hr))
 	{
 		MYCOUT << file << _T(" Open failed as a storage file!") << std::endl;
 		return false;
 	}
 
-	if (!callback || !callback(pStgRoot))
+	if (!callback(pStgRoot))
 	{
-		MYCOUT << file << _T(" callback is null or return false!") << std::endl;
+		MYCOUT << file << _T(" callback return false!") << std::endl;
 		return false;
 	}
 	
-	SAFE_RELEASE_EX(pStgRoot);
+	SAFE_RELEASE_CLASS(pStgRoot);
 	return true;
 }

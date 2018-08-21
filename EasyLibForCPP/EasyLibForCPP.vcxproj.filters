@@ -53,6 +53,9 @@
     <ClCompile Include="Algorithm\DetroitDiesel.cpp">
       <Filter>Algorithm</Filter>
     </ClCompile>
+    <ClCompile Include="defines.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source.def">

@@ -5,7 +5,7 @@ EXPORTS
 ;FileMangement
 ProcessDirByRegex	@1
 ProcessDir			@2
-ProcessDirByRegexEx	@3
-ProcessDirEx		@4
+;ProcessDirByRegexEx	@3
+;ProcessDirEx		@4
 ProcessStorageFile	@5
 

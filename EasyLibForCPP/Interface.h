@@ -1,10 +1,11 @@
-#ifndef EASY_LIB_FOR_CPP_INTERFACE_HEADER
-#define	EASY_LIB_FOR_CPP_INTERFACE_HEADER
+#ifndef EASY_LIB_FOR_CPP_INTERFACE_HEADER_
+#define	EASY_LIB_FOR_CPP_INTERFACE_HEADER_
 
 #pragma once
 
 #include <functional>
-#include <atlstr.h>
+#include <tchar.h>
+#include <ObjIdl.h>
 
 
 #define	ELIB_EXPORT
@@ -31,12 +32,15 @@
 /**********************************File Management**************************************/
 ELIB_API bool __stdcall ProcessDirByRegex(const TCHAR* dir, const TCHAR* regExpress, std::function<bool(const TCHAR*)> callback);
 ELIB_API bool __stdcall ProcessDir(const TCHAR* dir, const TCHAR* filter, std::function<bool(const TCHAR*)> callback);
+
+#ifdef _AFXDLL
 ELIB_API bool __stdcall ProcessDirByRegexEx(const CString dir, const CString regExpress, std::function<bool(const CString)> callback);
 ELIB_API bool __stdcall ProcessDirEx(const CString dir, const CString filter, std::function<bool(const CString)> callback);
-ELIB_API bool __stdcall ProcessStorageFile(CString file, std::function<bool(IStorage *)>callback);
+#endif
+ELIB_API bool __stdcall ProcessStorageFile(const TCHAR* file, std::function<bool(IStorage *)>callback);
 
 
 
-#endif // !EASY_LIB_FOR_CPP_INTERFACE_HEADER
+#endif // !EASY_LIB_FOR_CPP_INTERFACE_HEADER_
 
 
