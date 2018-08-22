@@ -2,9 +2,8 @@
 #include <regex>
 #include <io.h>
 #include <iostream>
-#include "defines.h"
 #include "Interface.h"
-
+#include "defines.h"
 
 
 
@@ -64,7 +63,7 @@ bool __stdcall ProcessDir(const TCHAR* dir, const TCHAR* filter, const TCHAR* re
 				try
 				{
 					tregex regExpress((tstring)regExpress, std::regex_constants::icase);
-					tmatch ms;
+					tsmatch ms;
 					tstring txt = szPath;
 					if (std::regex_match(txt, ms, regExpress))
 					{
@@ -163,7 +162,7 @@ bool __stdcall _ProcessDir(const CString dir, const CString filter, const CStrin
 				try
 				{
 					tregex regExpress((tstring)regExpress, std::regex_constants::icase);
-					tmatch ms;
+					tsmatch ms;
 					tstring txt = cstrPath.GetBuffer(0);
 					if (std::regex_match(txt, ms, regExpress))
 					{
@@ -217,8 +216,7 @@ ELIB_API bool __stdcall ProcessStorageFile(const TCHAR* file, std::function<bool
 	hr = ::StgIsStorageFile(file);
 	if (FAILED(hr))
 	{
-		MYDEBUGOUT(file _T(" Is not a StorageFile!"));
-		_sntprintf()
+		V_DEBUGOUT(_T("%s %s"), file, _T(" Is not a StorageFile!"));
 		return false;
 	}
 

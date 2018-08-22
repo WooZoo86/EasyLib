@@ -35,7 +35,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v100</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -124,6 +124,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;EASYLIBFORCPP_EXPORTS;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>E:\Work\MyProject\EasyLibrary\EasyLib\EasyLibForCPP;E:\Work\MyProject\EasyLibrary\EasyLib\EasyLibForCPP\FileMannager;E:\Work\MyProject\EasyLibrary\EasyLib\EasyLibForCPP\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -153,17 +154,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="defines.h" />
+    <ClInclude Include="Common\defines.h" />
     <ClInclude Include="Interface.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Algorithm\DetroitDiesel.cpp" />
-    <ClCompile Include="defines.cpp" />
+    <ClCompile Include="Common\defines.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="EasyLibForCPP.cpp" />
-    <ClCompile Include="FileMan.cpp" />
+    <ClCompile Include="FileMannager\FileMan.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

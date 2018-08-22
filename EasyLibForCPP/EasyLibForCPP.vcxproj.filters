@@ -16,11 +16,11 @@
     <Filter Include="Interface">
       <UniqueIdentifier>{eb9c865e-8431-4156-b4a7-222e5beb967d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Algorithm">
-      <UniqueIdentifier>{10ec2f94-bfef-4608-846a-c32da57fc587}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FileMan">
       <UniqueIdentifier>{3d24c2ce-d6f5-43b1-965a-903405be179d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{d55098bc-f96e-41ff-994a-376925a1c511}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -30,11 +30,11 @@
     <ClInclude Include="targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="defines.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
     <ClInclude Include="Interface.h">
       <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\defines.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -47,14 +47,11 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="FileMan.cpp">
+    <ClCompile Include="Common\defines.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="FileMannager\FileMan.cpp">
       <Filter>FileMan</Filter>
-    </ClCompile>
-    <ClCompile Include="Algorithm\DetroitDiesel.cpp">
-      <Filter>Algorithm</Filter>
-    </ClCompile>
-    <ClCompile Include="defines.cpp">
-      <Filter>Interface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
