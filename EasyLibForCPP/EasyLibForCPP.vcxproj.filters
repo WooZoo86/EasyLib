@@ -22,6 +22,15 @@
     <Filter Include="Common">
       <UniqueIdentifier>{d55098bc-f96e-41ff-994a-376925a1c511}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Process">
+      <UniqueIdentifier>{6defb2fe-468d-4013-ad70-879debef5ba8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Patch">
+      <UniqueIdentifier>{7d6af9ad-74c4-4840-81c7-79d604d509a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Text">
+      <UniqueIdentifier>{de424b24-3013-4808-88ac-8a6150f331b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -41,17 +50,29 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="EasyLibForCPP.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="dllmain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Common\defines.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="FileMannager\FileMan.cpp">
+    <ClCompile Include="FileMannager\Dir.cpp">
       <Filter>FileMan</Filter>
+    </ClCompile>
+    <ClCompile Include="File.cpp">
+      <Filter>FileMan</Filter>
+    </ClCompile>
+    <ClCompile Include="Convert.cpp">
+      <Filter>Text</Filter>
+    </ClCompile>
+    <ClCompile Include="WinEasyLib.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Hook.cpp">
+      <Filter>Patch</Filter>
+    </ClCompile>
+    <ClCompile Include="Process.cpp">
+      <Filter>Process</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

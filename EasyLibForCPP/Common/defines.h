@@ -37,51 +37,88 @@
 #define DEBUG_PREFIX_STR_A		DEBUG_TIME_INFO_A DEBUG_POS_INFO_A
 #define DEBUG_PREFIX_STR_W		DEBUG_TIME_INFO_W DEBUG_POS_INFO_W
 
-//#define USE_CONSOLE_OUTPUT
-#define DEBUG_CONSOLE_TITLE			_T("Debug Console")
-#define CONSOLE_FOREGROUND_MAGENTA	(FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY)
-#define CONSOLE_BACKGROUND_WHITE	(BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE | BACKGROUND_INTENSITY)
-
-#ifdef _DEBUG
-	#ifdef USE_CONSOLE_OUTPUT
-		#define	DBGOUTA(info)	printf(info)
-		#define	DBGOUTW(info)	wprintf(info)
-	#else
-		#define DBGOUTA(info)	OutputDebugStringA(info)
-		#define DBGOUTW(info)	OutputDebugStringW(info)
-	#endif
-#else
+//#define DBGOUT_ANYWAY			1
+//#define DBGOUT_NORMAL			1
+//#define DBGOUT_CONST			1
+//#define USE_CONSOLE_OUTPUT	1
+//#define USE_CUSTOM_DBGOUT		1
+#if (!defined(DBGOUT_ANYWAY) && !defined(DBGOUT_NORMAL) && !defined(DBGOUT_CONST))
 	#define DBGOUTA(info)	
-	#define DBGOUTW(info)	
-#endif // _DEBUG
+	#define DBGOUTW(info)
+#else
+	#ifdef USE_CUSTOM_DBGOUT
+		#define DBGOUTA			CustomDbgA
+		#define DBGOUTW			CustomDbgW
+	#else
+		#ifdef USE_CONSOLE_OUTPUT
+			#define DEBUG_CONSOLE_TITLE			_T("Debug Window")
+			#define CONSOLE_FOREGROUND_MAGENTA	(FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY)
+			#define CONSOLE_BACKGROUND_WHITE	(BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE | BACKGROUND_INTENSITY)
 
-/*const debug*/
-#define _C_DEBUGOUTA(info)		DBGOUTA(DEBUG_PREFIX_STR_A info "\r\n")
-#define C_DEBUGOUTA(info)		_C_DEBUGOUTA(info)
-#define _C_DEBUGOUTW(info)		DBGOUTW(DEBUG_PREFIX_STR_W info L"\r\n")
-#define C_DEBUGOUTW(info)		_C_DEBUGOUTW(info)
+			#define	DBGOUTA			printf
+			#define	DBGOUTW			wprintf
 
-/*var debug*/
-void VDebugOutA(const char* format, ...);
-void VDebugOutW(const wchar_t* format, ...);
-#define V_DEBUGOUTA(format,...)		VDebugOutA(format,__VA_ARGS__)
-#define V_DEBUGOUTW(format,...)		VDebugOutW(format,__VA_ARGS__)
+			void OpenConsole();
+			void CloseConsole();
+		#else
+			#define DBGOUTA			OutputDebugStringA
+			#define DBGOUTW			OutputDebugStringW
+		#endif
+	#endif
+#endif
+
+#ifdef DBGOUT_CONST//only const string
+	#define _C_DEBUGOUTA(info)		DBGOUTA("[CONST]" DEBUG_PREFIX_STR_A info "\r\n")
+	#define C_DEBUGOUTA(info)		_C_DEBUGOUTA(info)
+	#define _C_DEBUGOUTW(info)		DBGOUTW(L"[CONST]" DEBUG_PREFIX_STR_W info L"\r\n")
+	#define C_DEBUGOUTW(info)		_C_DEBUGOUTW(info)
+#else
+	#define C_DEBUGOUTA(info)
+	#define C_DEBUGOUTW(info)
+#endif
+
+#if (defined(DBGOUT_ANYWAY) || defined(DBGOUT_NORMAL))
+	void VDebugOutA(const char* format, ...);
+	void VDebugOutW(const wchar_t* format, ...);
+#endif
+
+#ifdef DBGOUT_NORMAL
+	#define N_DEBUGOUTA(format,...)		VDebugOutA("[NORMAL]",format,##__VA_ARGS__)
+	#define N_DEBUGOUTW(format,...)		VDebugOutW(L"[NORMAL]",format,##__VA_ARGS__)
+#else
+	#define N_DEBUGOUTA(format,...)		
+	#define N_DEBUGOUTW(format,...)	
+#endif
+
+#ifdef DBGOUT_ANYWAY
+	#define A_DEBUGOUTA(format,...)		VDebugOutA("[ANYWAY]",format,##__VA_ARGS__)
+	#define A_DEBUGOUTW(format,...)		VDebugOutW(L"[ANYWAY]",format,##__VA_ARGS__)
+#else
+	#define A_DEBUGOUTA(format,...)		
+	#define A_DEBUGOUTW(format,...)	
+#endif
 
 #ifdef _UNICODE
-	#define DBGOUT					DBGOUTW
+	#define DEBUG_TIME_INFO			DEBUG_TIME_INFO_W
+	#define DEBUG_POS_INFO			DEBUG_POS_INFO_W
 	#define DEBUG_PREFIX_STR		DEBUG_PREFIX_STR_W
+	#define DBGOUT					DBGOUTW
 	#define C_DEBUGOUT				C_DEBUGOUTW
-	#define V_DEBUGOUT				V_DEBUGOUTW
+	#define N_DEBUGOUT				N_DEBUGOUTW
+	#define A_DEBUGOUT				A_DEBUGOUTW
 #else
-	#define DBGOUT					DBGOUTA
+	#define DEBUG_TIME_INFO			DEBUG_TIME_INFO_A
+	#define DEBUG_POS_INFO			DEBUG_POS_INFO_A
 	#define DEBUG_PREFIX_STR		DEBUG_PREFIX_STR_A
+	#define DBGOUT					DBGOUTA
 	#define C_DEBUGOUT				C_DEBUGOUTA
-	#define V_DEBUGOUT				V_DEBUGOUTA
+	#define N_DEBUGOUT				N_DEBUGOUTA
+	#define A_DEBUGOUT				A_DEBUGOUTA
 #endif
 
 
 /************************safe assert*********************************/
-#define	SAFE_ASSERT_POINTER(p,v)	if(!(p)){V_DEBUGOUTA("%s%s == nullptr",typeid((p)).name(),STR((p)));return v;}
+#define	SAFE_ASSERT_POINTER(p,v)	if(!(p)){A_DEBUGOUTA("%s%s == nullptr",typeid((p)).name(),STR((p)));return v;}
 
 
 /************************safe release*********************************/
@@ -97,11 +134,12 @@ void VDebugOutW(const wchar_t* format, ...);
 #define SAFE_RELEASE_CLASS(p)			if((p)){(p)->Release();(p)=nullptr;}
 
 
+/************************safe check windows API return value************************/
+#define	SAFE_CHECK_API(value,ops,cmp)				if ((value)ops(cmp)) {FormatWinMsg();}
+#define	SAFE_CHECK_API_RETURN(value,ops,cmp,ret)	if ((value)ops(cmp)) {FormatWinMsg();return ret;}
 
-/*********************************safe check value*********************************/
-#define	SAFE_CHECK_RETURN(value,ops,cmp)	if ((value)ops(cmp)) {FormatWinMsg();}
-
-
+/***************************API**********************/
+void FormatWinMsg();
 
 #endif // !EASY_LIB_FOR_CPP_DEFINES_HEADER_
 

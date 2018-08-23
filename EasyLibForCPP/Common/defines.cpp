@@ -4,8 +4,8 @@
 #include <iostream>
 #include <tchar.h>
 
-
-void VDebugOutA(const char* format, ...)
+#if (defined(DBGOUT_ANYWAY) || defined(DBGOUT_NORMAL))
+void VDebugOutA(const char* from, const char* format, ...)
 {
 	char buf[DEBUG_OUT_STR_MAX + 1] = { 0 };
 	char info[DEBUG_OUT_STR_MAX + 1] = { 0 };
@@ -13,14 +13,14 @@ void VDebugOutA(const char* format, ...)
 
 	va_start(va, format);
 	_vsnprintf_s(buf, DEBUG_OUT_STR_MAX, format, va);
-	_snprintf_s(info, DEBUG_OUT_STR_MAX, DEBUG_OUT_STR_MAX, "%s %s\r\n",
-		DEBUG_PREFIX_STR_A, buf);
+	_snprintf_s(info, DEBUG_OUT_STR_MAX, DEBUG_OUT_STR_MAX, "%s %s %s\r\n",
+		from, DEBUG_PREFIX_STR_A, buf);
 	va_end(va);
 
 	DBGOUTA(info);
 }
 
-void VDebugOutW(const wchar_t* format, ...)
+void VDebugOutW(const wchar_t* from, const wchar_t* format, ...)
 {
 	wchar_t buf[DEBUG_OUT_STR_MAX + 1] = { 0 };
 	wchar_t info[DEBUG_OUT_STR_MAX + 1] = { 0 };
@@ -28,12 +28,13 @@ void VDebugOutW(const wchar_t* format, ...)
 
 	va_start(va, format);
 	_vsnwprintf_s(buf, DEBUG_OUT_STR_MAX, format, va);
-	_snwprintf_s(info, DEBUG_OUT_STR_MAX, DEBUG_OUT_STR_MAX, L"%s %s\r\n",
-		DEBUG_PREFIX_STR_W, buf);
+	_snwprintf_s(info, DEBUG_OUT_STR_MAX, DEBUG_OUT_STR_MAX, L"%s %s %s\r\n",
+		from, DEBUG_PREFIX_STR_W, buf);
 	va_end(va);
 
 	DBGOUTW(info);
 }
+#endif//!defined(DBGOUT_ANYWAY) || defined(DBGOUT_NORMAL)
 
 void FormatWinMsg()
 {
@@ -55,30 +56,46 @@ void FormatWinMsg()
 		_sntprintf_s(szErr, DEBUG_OUT_STR_MAX, _T("id = %#X,err = unknown Windows error."), dwErrId);
 	}
 
-	V_DEBUGOUT(szErr);
+	A_DEBUGOUT(szErr);
 }
 
-bool InitConsole()
-{
-	bool result = true;
-
+#if (defined(DBGOUT_ANYWAY) || defined(DBGOUT_NORMAL) || defined(DBGOUT_CONST))
 #ifdef USE_CONSOLE_OUTPUT
-	if (!AllocConsole())
-	{
-		OutputDebugString(_T("AllocConsole failed!!!"));
-		return false;
-	}
+static bool InitConsole()
+{
+	SAFE_CHECK_API_RETURN(AllocConsole(), != , TRUE, false);
 
 	FILE* file = nullptr;
-	freopen_s(&file, "CONOUT$", "w+t", stdout);
-	freopen_s(&file, "CONIN$", "r+t", stdin);
+	_tfreopen_s(&file, _T("CONOUT$"), _T("w+t"), stdout);
+	_tfreopen_s(&file, _T("CONIN$"), _T("r+t"), stdin);
 
 	SetConsoleTitle(DEBUG_CONSOLE_TITLE);
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FOREGROUND_MAGENTA
 		| CONSOLE_BACKGROUND_WHITE);
 
-	result = true;
-#endif//!USE_CONSOLE_OUTPUT
-
-	return result;
+	return true;
 }
+
+static DWORD WINAPI ThreadInitConsole(LPVOID lpParam)
+{
+	if (!InitConsole())
+	{
+		return EXIT_FAILURE;
+	}
+
+	return 0;
+}
+
+void CloseConsole()
+{
+	FreeConsole();
+}
+
+void OpenConsole()
+{
+	CreateThread(nullptr, NULL, ThreadHookFunc, nullptr, NULL, nullptr);
+}
+
+#endif//!USE_CONSOLE_OUTPUT
+#endif//!defined(DBGOUT_ANYWAY) || defined(DBGOUT_NORMAL) || defined(DBGOUT_CONST)
+

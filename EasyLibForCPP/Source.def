@@ -1,11 +1,25 @@
-LIBRARY	EasyLibForCPP
+LIBRARY	WinEasyLib
 
 EXPORTS
 
 ;FileMangement
-ProcessDirByRegex	@1
-ProcessDir			@2
-;ProcessDirByRegexEx	@3
-;ProcessDirEx		@4
-ProcessStorageFile	@5
+;;Dir
+TraverseDirEx			@10000
+TraverseDir				@10001
+ProcessStorageFile		@10002
+WatchDir				@10003
 
+;Text
+;;Convert
+U2M						@20000
+M2U						@20001
+
+;Process
+;;Process
+GetModuleByTlhelp		@30000
+
+
+;Patch
+;;Hook
+InstallHook				@40000
+UnInstallHook			@40001
