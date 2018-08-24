@@ -3,8 +3,6 @@
 
 #pragma once
 
-//#include <typeinfo>
-
 
 /************************regex*********************************/
 #ifdef _UNICODE
