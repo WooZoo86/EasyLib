@@ -92,7 +92,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;EASYLIBFORCPP_EXPORTS;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>E:\Work\MyProject\EasyLibrary\EasyLib\EasyLibForCPP;E:\Work\MyProject\EasyLibrary\EasyLib\EasyLibForCPP\FileMannager;E:\Work\MyProject\EasyLibrary\EasyLib\EasyLibForCPP\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Text;.\Patch;.\Process;..\EasyLibForCPP;.\FileMannager;.\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -126,7 +126,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;EASYLIBFORCPP_EXPORTS;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>E:\Work\MyProject\EasyLibrary\EasyLib\EasyLibForCPP\Patch;E:\Work\MyProject\EasyLibrary\EasyLib\EasyLibForCPP\Text;E:\Work\MyProject\EasyLibrary\EasyLib\EasyLibForCPP\Process;E:\Work\MyProject\EasyLibrary\EasyLib\EasyLibForCPP;E:\Work\MyProject\EasyLibrary\EasyLib\EasyLibForCPP\FileMannager;E:\Work\MyProject\EasyLibrary\EasyLib\EasyLibForCPP\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Patch;.\Text;.\Process;..\EasyLibForCPP;.\FileMannager;.\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -163,12 +163,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\defines.cpp" />
-    <ClCompile Include="Convert.cpp" />
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="Hook.cpp" />
-    <ClCompile Include="Process.cpp" />
+    <ClCompile Include="FileMannager\File.cpp" />
+    <ClCompile Include="Patch\Hook.cpp" />
+    <ClCompile Include="Process\Process.cpp" />
+    <ClCompile Include="Text\Convert.cpp" />
     <ClCompile Include="WinEasyLib.cpp" />
-    <ClCompile Include="File.cpp" />
     <ClCompile Include="FileMannager\Dir.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

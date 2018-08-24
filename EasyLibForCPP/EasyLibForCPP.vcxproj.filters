@@ -59,20 +59,20 @@
     <ClCompile Include="FileMannager\Dir.cpp">
       <Filter>FileMan</Filter>
     </ClCompile>
-    <ClCompile Include="File.cpp">
-      <Filter>FileMan</Filter>
-    </ClCompile>
-    <ClCompile Include="Convert.cpp">
-      <Filter>Text</Filter>
-    </ClCompile>
     <ClCompile Include="WinEasyLib.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Hook.cpp">
+    <ClCompile Include="Text\Convert.cpp">
+      <Filter>Text</Filter>
+    </ClCompile>
+    <ClCompile Include="Process\Process.cpp">
+      <Filter>Process</Filter>
+    </ClCompile>
+    <ClCompile Include="Patch\Hook.cpp">
       <Filter>Patch</Filter>
     </ClCompile>
-    <ClCompile Include="Process.cpp">
-      <Filter>Process</Filter>
+    <ClCompile Include="FileMannager\File.cpp">
+      <Filter>FileMan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
