@@ -9,33 +9,33 @@
 
 
 #define	ELIB_EXPORT
-
-
 #ifdef ELIB_EXPORT
-
-#ifdef __cplusplus
-#define	ELIB_API	extern "C" __declspec(dllexport)
+	#ifdef __cplusplus
+		#define	ELIB_API	extern "C" __declspec(dllexport)
+	#else
+		#define	ELIB_API	__declspec(dllexport)
+	#endif
 #else
-#define	ELIB_API	__declspec(dllexport)
-#endif
-
-#else
-#ifdef __cplusplus
-#define	ELIB_API	extern "C" __declspec(dllimport)
-#else
-#define	ELIB_API	__declspec(dllimport)
-#endif
-
+	#ifdef __cplusplus
+		#define	ELIB_API	extern "C" __declspec(dllimport)
+	#else
+		#define	ELIB_API	__declspec(dllimport)
+	#endif
 #endif // ELIB_EXPORT
 
 
 /**********************************File Management**************************************/
 //Dir
-ELIB_API bool __stdcall TraverseDirEx(const TCHAR* dir, const TCHAR* regExpress, std::function<bool(const TCHAR*)> callback);
-ELIB_API bool __stdcall TraverseDir(const TCHAR* dir, const TCHAR* filter, std::function<bool(const TCHAR*)> callback);
-ELIB_API bool __stdcall ProcessStorageFile(const TCHAR* file, std::function<bool(IStorage *)>callback);
-ELIB_API bool __stdcall WatchDir(const TCHAR* dir, std::function<bool(const TCHAR*)> callback);
+ELIB_API bool __stdcall TraverseDirExA(const char* dir, const char* regExpress, std::function<bool(const char*)> callback);
+ELIB_API bool __stdcall TraverseDirExW(const wchar_t* dir, const wchar_t* regExpress, std::function<bool(const wchar_t*)> callback);
+ELIB_API bool __stdcall TraverseDirA(const char* dir, const char* filter, std::function<bool(const char*)> callback);
+ELIB_API bool __stdcall TraverseDirW(const wchar_t* dir, const wchar_t* filter, std::function<bool(const wchar_t*)> callback);
+ELIB_API bool __stdcall WatchDirW(const wchar_t* dir, std::function<bool(const wchar_t*)> callback);
+ELIB_API bool __stdcall WatchDirA(const char* dir, std::function<bool(const char*)> callback);
 
+
+//File
+ELIB_API bool __stdcall ProcessStorageFile(const wchar_t* file, std::function<bool(IStorage *)>callback);
 
 /********************************** Text ****************************************/
 //Convert
@@ -44,11 +44,19 @@ ELIB_API wchar_t* __stdcall M2U(const char* str, UINT cp = CP_ACP);
 
 /********************************** Process ****************************************/
 //Process
-ELIB_API HMODULE __stdcall GetModuleByTlhelp(TCHAR* strcharset);
+ELIB_API HMODULE __stdcall GetModuleByTlhelpW(wchar_t* name, DWORD pid = 0);
+ELIB_API HMODULE __stdcall GetModuleByTlhelpA(char* name, DWORD pid = 0);
+
+#ifdef _UNICODE
+	#define GetModuleByTlhelp	GetModuleByTlhelpW
+#else
+	#define GetModuleByTlhelp	GetModuleByTlhelpA
+#endif // _UNICODE
 
 /********************************** Patch ****************************************/
 //Hook
-ELIB_API bool __stdcall InstallHook(DWORD addr, DWORD len, PROC pfunc, BYTE* save = nullptr);
+typedef  void  (__stdcall *HookProc)();
+ELIB_API bool __stdcall InstallHook(DWORD addr, DWORD len, HookProc pfunc, BYTE* save = nullptr);
 ELIB_API bool __stdcall UnInstallHook(DWORD addr, DWORD len, BYTE* saved);
 #endif // !EASY_LIB_FOR_CPP_INTERFACE_HEADER_
 

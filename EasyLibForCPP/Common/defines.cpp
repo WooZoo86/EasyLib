@@ -5,7 +5,7 @@
 #include <tchar.h>
 
 #if (defined(DBGOUT_ANYWAY) || defined(DBGOUT_NORMAL))
-void VDebugOutA(const char* from, const char* format, ...)
+void VDebugOutA(const char* prefix, const char* format, ...)
 {
 	char buf[DEBUG_OUT_STR_MAX + 1] = { 0 };
 	char info[DEBUG_OUT_STR_MAX + 1] = { 0 };
@@ -13,14 +13,13 @@ void VDebugOutA(const char* from, const char* format, ...)
 
 	va_start(va, format);
 	_vsnprintf_s(buf, DEBUG_OUT_STR_MAX, format, va);
-	_snprintf_s(info, DEBUG_OUT_STR_MAX, DEBUG_OUT_STR_MAX, "%s %s %s\r\n",
-		from, DEBUG_PREFIX_STR_A, buf);
+	_snprintf_s(info, DEBUG_OUT_STR_MAX, DEBUG_OUT_STR_MAX, "%s %s\r\n", prefix, buf);
 	va_end(va);
 
 	DBGOUTA(info);
 }
 
-void VDebugOutW(const wchar_t* from, const wchar_t* format, ...)
+void VDebugOutW(const wchar_t* prefix, const wchar_t* format, ...)
 {
 	wchar_t buf[DEBUG_OUT_STR_MAX + 1] = { 0 };
 	wchar_t info[DEBUG_OUT_STR_MAX + 1] = { 0 };
@@ -28,8 +27,7 @@ void VDebugOutW(const wchar_t* from, const wchar_t* format, ...)
 
 	va_start(va, format);
 	_vsnwprintf_s(buf, DEBUG_OUT_STR_MAX, format, va);
-	_snwprintf_s(info, DEBUG_OUT_STR_MAX, DEBUG_OUT_STR_MAX, L"%s %s %s\r\n",
-		from, DEBUG_PREFIX_STR_W, buf);
+	_snwprintf_s(info, DEBUG_OUT_STR_MAX, DEBUG_OUT_STR_MAX, L"%s %s\r\n", prefix, buf);
 	va_end(va);
 
 	DBGOUTW(info);
@@ -99,3 +97,47 @@ void OpenConsole()
 #endif//!USE_CONSOLE_OUTPUT
 #endif//!defined(DBGOUT_ANYWAY) || defined(DBGOUT_NORMAL) || defined(DBGOUT_CONST)
 
+#ifdef NO_USE_INLINE_CODE
+void SRelease(void* pointer, POINTER_TYPE ptype)
+{
+	if (pointer)
+	{
+		switch (ptype)
+		{
+		case emPOINTER_TYPE_C:
+			free(pointer);
+			break;
+		case emPOINTER_TYPE_CPP:
+			delete pointer;
+			break;
+		case emPOINTER_TYPE_CPP_ARRAY:
+			delete[] pointer;
+			break;
+		case emPOINTER_TYPE_REG:
+			RegCloseKey((HKEY)pointer);
+			break;
+		case emPOINTER_TYPE_FILE:
+			fclose((FILE*)pointer);
+			break;
+		case emPOINTER_TYPE_HANDLE:
+			CloseHandle((HANDLE)pointer);
+			break;
+		case emPOINTER_TYPE_MAPVIEW:
+			UnmapViewOfFile((LPCVOID)pointer);
+			break;
+		case emPOINTER_TYPE_CS:
+			LeaveCriticalSection((LPCRITICAL_SECTION)pointer);
+			DeleteCriticalSection((LPCRITICAL_SECTION)pointer);
+			break;
+		case emPOINTER_TYPE_LIB:
+			FreeLibrary((HMODULE)pointer);
+			break;
+		default:
+			C_DEBUGOUT(_T("unknow pointer type!"));
+			break;
+		}
+
+		pointer = nullptr;
+	}
+}
+#endif//!NO_USE_INLINE_CODE

@@ -3,33 +3,25 @@
 #include "Interface.h"
 
 
-ELIB_API bool __stdcall ProcessStorageFile(const TCHAR* file, std::function<bool(IStorage *)>callback)
+ELIB_API bool __stdcall ProcessStorageFile(const wchar_t* file, std::function<bool(IStorage *)>callback)
 {
-	SAFE_ASSERT_POINTER(file, false);
-	SAFE_ASSERT_POINTER(callback, false);
+	SAFE_ASSERT_RETURN(file, false);
+	SAFE_ASSERT_RETURN(callback, false);
 
 	HRESULT hr = S_FALSE;
 	hr = ::StgIsStorageFile(file);
-	if (FAILED(hr))
-	{
-		N_DEBUGOUT(_T("%s %s"), file, _T(" Is not a StorageFile!"));
-		return false;
-	}
+	SAFE_CHECK_API_RETURN((HRESULT)hr, < , 0, false);
 
 	IStorage *pStgRoot = nullptr;
 	hr = ::StgOpenStorage(file, nullptr, STGM_SHARE_EXCLUSIVE, nullptr, 0, &pStgRoot);
-	if (FAILED(hr))
-	{
-		N_DEBUGOUT(_T("%s %s"), file, _T(" Open failed as a storage file!"));
-		return false;
-	}
+	SAFE_CHECK_API_RETURN((HRESULT)hr, < , 0, false);
 
 	if (!callback(pStgRoot))
 	{
-		N_DEBUGOUT(_T("%s %s"), file, _T(" callback return false!"));
+		N_DEBUGOUTW(L"%s %s", file, " callback return false!");
 		return false;
 	}
 
-	SAFE_RELEASE_CLASS(pStgRoot);
+	TRelease(pStgRoot);
 	return true;
 }

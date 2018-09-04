@@ -3,16 +3,14 @@
 #include "Interface.h"
 
 
-static bool SafeCopyCode(DWORD addr, BYTE* code, DWORD len, BYTE* saved)
+static bool SafeCopyCode(DWORD addr, const BYTE* code, DWORD len, BYTE* saved)
 {
 	DWORD dwOldProtect = 0;
 
 	try
 	{
-		if (!VirtualProtect((LPVOID)addr, len, PAGE_EXECUTE_READWRITE, &dwOldProtect))
-		{
-			return false;
-		}
+		SAFE_CHECK_API_RETURN(VirtualProtect((LPVOID)addr, len, 
+			PAGE_EXECUTE_READWRITE, &dwOldProtect), ==, FALSE, false);
 
 		if (saved)
 		{
@@ -24,19 +22,19 @@ static bool SafeCopyCode(DWORD addr, BYTE* code, DWORD len, BYTE* saved)
 	}
 	catch (std::exception& e)
 	{
-		A_DEBUGOUTA("exception: addr: %#p,code: %#p, len: %#x,id: %s,des: %s", addr,
-			code, len, e.code(), e.what());
+		A_DEBUGOUTA("exception: addr: %#p,code: %#p, len: %#x,des: %s", addr,
+			code, len, e.what());
 		return false;
 	}
 
 	return true;
 }
 
-ELIB_API bool __stdcall InstallHook(DWORD addr, DWORD len, PROC pfunc, BYTE* saved)
+ELIB_API bool __stdcall InstallHook(DWORD addr, DWORD len, HookProc pfunc, BYTE* saved)
 {
-	SAFE_ASSERT_POINTER(addr, false);
-	SAFE_ASSERT_POINTER(len, false);
-	SAFE_ASSERT_POINTER(pfunc, false);
+	SAFE_ASSERT_RETURN(addr, false);
+	SAFE_ASSERT_RETURN(len, false);
+	SAFE_ASSERT_RETURN(pfunc, false);
 
 	BYTE* e9_jmp = (BYTE *)malloc(len);
 	SAFE_CHECK_API_RETURN(e9_jmp, == , nullptr, false);
@@ -45,21 +43,17 @@ ELIB_API bool __stdcall InstallHook(DWORD addr, DWORD len, PROC pfunc, BYTE* sav
 	e9_jmp[0] = 0xe9;
 	*(DWORD *)&e9_jmp[1] = (DWORD)pfunc - addr - 5;
 
-	if (!SafeCopyCode(addr, e9_jmp, len, saved))
-	{
-		free(e9_jmp);
-		return false;
-	}
+	bool result = SafeCopyCode(addr, e9_jmp, len, saved);
+	SAFE_FREE_POINTER(e9_jmp);
 
-	free(e9_jmp);
-	return true;
+	return result;
 }
 
 ELIB_API bool __stdcall UnInstallHook(DWORD addr, DWORD len, BYTE* saved)
 {
-	SAFE_ASSERT_POINTER(addr, false);
-	SAFE_ASSERT_POINTER(len, false);
-	SAFE_ASSERT_POINTER(saved, false);
+	SAFE_ASSERT_RETURN(addr, false);
+	SAFE_ASSERT_RETURN(len, false);
+	SAFE_ASSERT_RETURN(saved, false);
 
 	if (!SafeCopyCode(addr, saved, len, nullptr))
 	{

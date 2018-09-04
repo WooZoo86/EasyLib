@@ -2,12 +2,18 @@ LIBRARY	WinEasyLib
 
 EXPORTS
 
+;Note: Module(1)+File(00)+Function(00)=TraverseDirEx  order<100000
 ;FileMangement
 ;;Dir
-TraverseDirEx			@10000
-TraverseDir				@10001
-ProcessStorageFile		@10002
-WatchDir				@10003
+TraverseDirExA			@10000
+TraverseDirExW			@10001
+TraverseDirA			@10002
+TraverseDirW			@10003
+WatchDirA				@10004
+WatchDirW				@10005
+
+;;File
+ProcessStorageFile		@10101
 
 ;Text
 ;;Convert
@@ -16,7 +22,8 @@ M2U						@20001
 
 ;Process
 ;;Process
-GetModuleByTlhelp		@30000
+GetModuleByTlhelpA		@30000
+GetModuleByTlhelpW		@30001
 
 
 ;Patch
