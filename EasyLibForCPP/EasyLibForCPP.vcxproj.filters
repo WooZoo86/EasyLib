@@ -31,6 +31,9 @@
     <Filter Include="Text">
       <UniqueIdentifier>{de424b24-3013-4808-88ac-8a6150f331b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Crypto">
+      <UniqueIdentifier>{3e462560-96eb-4592-a2bd-f42a96df4307}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -73,6 +76,9 @@
     </ClCompile>
     <ClCompile Include="FileMannager\File.cpp">
       <Filter>FileMan</Filter>
+    </ClCompile>
+    <ClCompile Include="Crypto\RIJNDAEL.cpp">
+      <Filter>Crypto</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

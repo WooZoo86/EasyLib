@@ -33,6 +33,17 @@ ELIB_API bool __stdcall TraverseDirW(const wchar_t* dir, const wchar_t* filter, 
 ELIB_API bool __stdcall WatchDirW(const wchar_t* dir, std::function<bool(const wchar_t*)> callback);
 ELIB_API bool __stdcall WatchDirA(const char* dir, std::function<bool(const char*)> callback);
 
+#ifdef _UNICODE
+	#define TraverseDirEx	TraverseDirExW
+	#define TraverseDir		TraverseDirW
+	#define WatchDir		WatchDirW
+
+#else
+	#define TraverseDirEx	TraverseDirExA
+	#define TraverseDir		TraverseDirA
+	#define WatchDir		WatchDirA
+
+#endif // _UNICODE
 
 //File
 ELIB_API bool __stdcall ProcessStorageFile(const wchar_t* file, std::function<bool(IStorage *)>callback);
@@ -58,6 +69,16 @@ ELIB_API HMODULE __stdcall GetModuleByTlhelpA(char* name, DWORD pid = 0);
 typedef  void  (__stdcall *HookProc)();
 ELIB_API bool __stdcall InstallHook(DWORD addr, DWORD len, HookProc pfunc, BYTE* save = nullptr);
 ELIB_API bool __stdcall UnInstallHook(DWORD addr, DWORD len, BYTE* saved);
+
+/********************************** Crypto ****************************************/
+//Rijndael
+ELIB_API int __stdcall RijndaelSetupEncrypt(unsigned long *rk, const unsigned char *key, int keybits);
+ELIB_API int __stdcall RijndaelSetupDecrypt(unsigned long *rk, const unsigned char *key, int keybits);
+ELIB_API void __stdcall RijndaelEncrypt(const unsigned long *rk, int nrounds, 
+	const unsigned char plaintext[16], unsigned char ciphertext[16]);
+ELIB_API void __stdcall RijndaelDecrypt(const unsigned long *rk, int nrounds,
+	const unsigned char ciphertext[16], unsigned char plaintext[16]);
+
 #endif // !EASY_LIB_FOR_CPP_INTERFACE_HEADER_
 
 

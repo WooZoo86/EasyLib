@@ -33,7 +33,7 @@ static bool __stdcall ProcessDirW(const wchar_t* dir, const wchar_t* filter, con
 
 	do
 	{
-		if (!wcsicmp(file.cFileName, L".") || !wcsicmp(file.cFileName, L".."))
+		if (!_wcsicmp(file.cFileName, L".") || !_wcsicmp(file.cFileName, L".."))
 			continue;
 		
 		memset(szPath, 0, MAX_PATH + 1);
@@ -112,7 +112,7 @@ static bool __stdcall ProcessDirA(const char* dir, const char* filter, const cha
 
 	do
 	{
-		if (!strcmpi(file.cFileName, ".") || !strcmpi(file.cFileName, ".."))
+		if (!_strcmpi(file.cFileName, ".") || !_strcmpi(file.cFileName, ".."))
 			continue;
 
 		memset(szPath, 0, MAX_PATH + 1);

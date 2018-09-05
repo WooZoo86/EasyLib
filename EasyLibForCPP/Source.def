@@ -30,3 +30,10 @@ GetModuleByTlhelpW		@30001
 ;;Hook
 InstallHook				@40000
 UnInstallHook			@40001
+
+;Crypto
+;;RijNdael
+RijndaelSetupEncrypt	@50000
+RijndaelSetupDecrypt	@50001
+RijndaelEncrypt			@50002
+RijndaelDecrypt			@50003

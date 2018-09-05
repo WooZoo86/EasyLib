@@ -163,6 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\defines.cpp" />
+    <ClCompile Include="Crypto\RIJNDAEL.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="FileMannager\File.cpp" />
     <ClCompile Include="Patch\Hook.cpp" />
