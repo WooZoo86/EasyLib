@@ -1,8 +1,0 @@
-LIBRARY	WinEasyLib
-
-EXPORTS
-
-;Note: Module(1)+File(00)+Function(00)=TraverseDirEx  order<100000
-
-
-
