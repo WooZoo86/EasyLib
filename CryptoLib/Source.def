@@ -1,0 +1,8 @@
+LIBRARY CryptoLib
+
+EXPORTS
+;;RijNdael
+RijndaelSetupEncrypt	@10000
+RijndaelSetupDecrypt	@10001
+RijndaelEncrypt			@10002
+RijndaelDecrypt			@10003

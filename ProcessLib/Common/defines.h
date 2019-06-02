@@ -5,17 +5,6 @@
 
 #include <typeinfo>
 
-/************************regex*********************************/
-#ifdef _UNICODE
-	#define tregex	std::wregex
-	#define	tsmatch	std::wsmatch
-	#define	tstring std::wstring
-#else
-	#define tregex	std::regex
-	#define	tmatch	std::smatch
-	#define	tstring std::string
-#endif//_UNICODE
-
 
 /************************base macro*********************************/
 #define _STR(s)			#s
@@ -167,6 +156,7 @@
 	template<class T> void TARRDelete(T p) { if (p) { delete[] p; p = nullptr; } }
 	template<class T> int TLength(T& arr) { if (arr) { return sizeof(arr) / sizeof(arr[0]); } return 0;}
 #endif
+
 /************************safe check windows API return value************************/
 void FormatWinMsg();
 #define	SAFE_CHECK_API(value,ops,cmp)				if ((value) ops (cmp)) {FormatWinMsg();}

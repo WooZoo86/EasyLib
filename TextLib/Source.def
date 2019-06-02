@@ -1,0 +1,8 @@
+LIBRARY TextLib
+
+
+EXPORTS
+;Text
+;;Convert
+U2M						@10000
+M2U						@10001

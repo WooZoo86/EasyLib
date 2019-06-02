@@ -3,37 +3,6 @@ LIBRARY	WinEasyLib
 EXPORTS
 
 ;Note: Module(1)+File(00)+Function(00)=TraverseDirEx  order<100000
-;FileMangement
-;;Dir
-TraverseDirExA			@10000
-TraverseDirExW			@10001
-TraverseDirA			@10002
-TraverseDirW			@10003
-WatchDirA				@10004
-WatchDirW				@10005
-
-;;File
-ProcessStorageFile		@10101
-
-;Text
-;;Convert
-U2M						@20000
-M2U						@20001
-
-;Process
-;;Process
-GetModuleByTlhelpA		@30000
-GetModuleByTlhelpW		@30001
 
 
-;Patch
-;;Hook
-InstallHook				@40000
-UnInstallHook			@40001
 
-;Crypto
-;;RijNdael
-RijndaelSetupEncrypt	@50000
-RijndaelSetupDecrypt	@50001
-RijndaelEncrypt			@50002
-RijndaelDecrypt			@50003

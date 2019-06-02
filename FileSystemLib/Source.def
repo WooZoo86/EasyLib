@@ -1,0 +1,14 @@
+LIBRARY FileSystemLib
+
+EXPORTS
+;FileMangement
+;;Dir
+TraverseDirExA			@10000
+TraverseDirExW			@10001
+TraverseDirA			@10002
+TraverseDirW			@10003
+WatchDirA				@10004
+WatchDirW				@10005
+
+;;File
+ProcessStorageFile		@10101

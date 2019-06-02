@@ -1,0 +1,5 @@
+LIBRARY ProcessLib
+
+EXPORTS
+GetModuleByTlhelpW	@10000
+GetModuleByTlhelpA	@10002

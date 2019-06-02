@@ -1,9 +1,6 @@
-#include"stdafx.h"
+#include "../Crypto.h"
 
 #define FULL_UNROLL
-
-#include "Interface.h"
-
 #define KEYLENGTH(keybits) ((keybits)/8)
 #define RKLENGTH(keybits)  ((keybits)/8+28)
 #define NROUNDS(keybits)   ((keybits)/32+6)

@@ -1,6 +1,6 @@
-#include "stdafx.h"
-#include "defines.h"
-#include "Interface.h"
+#include "../stdafx.h"
+#include "../Common/defines.h"
+#include "../FileSystem.h"
 
 
 ELIB_API bool __stdcall ProcessStorageFile(const wchar_t* file, std::function<bool(IStorage *)>callback)

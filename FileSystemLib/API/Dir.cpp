@@ -1,8 +1,9 @@
-#include "stdafx.h"
+#include "../stdafx.h"
 #include <regex>
 #include <io.h>
-#include "Interface.h"
-#include "defines.h"
+#include "../FileSystem.h"
+#include "../Common/defines.h"
+#include <tchar.h>
 
 
 
@@ -12,19 +13,19 @@ static bool __stdcall ProcessDirW(const wchar_t* dir, const wchar_t* filter, con
 	wchar_t szFind[MAX_PATH + 1] = { 0 };
 	wchar_t szPath[MAX_PATH + 1] = { 0 };
 
-	wcsncpy(szRoot, dir, MAX_PATH);
+	wcsncpy_s(szRoot, dir, MAX_PATH);
 	if (dir[wcslen(dir) - 1] != L'\\')
-		wcsncat(szRoot, L"\\", MAX_PATH);
-	wcsncpy(szFind, szRoot, MAX_PATH);
+		wcsncat_s(szRoot, L"\\", MAX_PATH);
+	wcsncpy_s(szFind, szRoot, MAX_PATH);
 
 	bool bUseRegex = !filter && regExpress;
 	if (bUseRegex)
 	{
-		wcsncat(szFind, L"*.*", MAX_PATH);
+		wcsncat_s(szFind, L"*.*", MAX_PATH);
 	}
 	else
 	{
-		wcsncat(szFind, filter, MAX_PATH);
+		wcsncat_s(szFind, filter, MAX_PATH);
 	}
 
 	WIN32_FIND_DATAW file = { 0 };
@@ -37,12 +38,12 @@ static bool __stdcall ProcessDirW(const wchar_t* dir, const wchar_t* filter, con
 			continue;
 		
 		memset(szPath, 0, MAX_PATH + 1);
-		wcsncpy(szPath, szRoot, MAX_PATH);
-		wcsncat(szPath, file.cFileName, MAX_PATH);
+		wcsncpy_s(szPath, szRoot, MAX_PATH);
+		wcsncat_s(szPath, file.cFileName, MAX_PATH);
 
 		if (file.dwFileAttributes & _A_SUBDIR)
 		{
-			wcsncat(szPath, L"\\", MAX_PATH);
+			wcsncat_s(szPath, L"\\", MAX_PATH);
 			ProcessDirW(szPath, filter, regExpress, callback);
 		}
 		else
@@ -91,19 +92,19 @@ static bool __stdcall ProcessDirA(const char* dir, const char* filter, const cha
 	char szFind[MAX_PATH + 1] = { 0 };
 	char szPath[MAX_PATH + 1] = { 0 };
 
-	strncpy(szRoot, dir, MAX_PATH);
+	strncpy_s(szRoot, dir, MAX_PATH);
 	if (dir[strlen(dir) - 1] != '\\')
-		strncat(szRoot, "\\", MAX_PATH);
-	strncpy(szFind, szRoot, MAX_PATH);
+		strncat_s(szRoot, "\\", MAX_PATH);
+	strncpy_s(szFind, szRoot, MAX_PATH);
 
 	bool bUseRegex = !filter && regExpress;
 	if (bUseRegex)
 	{
-		strncat(szFind, "*.*", MAX_PATH);
+		strncat_s(szFind, "*.*", MAX_PATH);
 	}
 	else
 	{
-		strncat(szFind, filter, MAX_PATH);
+		strncat_s(szFind, filter, MAX_PATH);
 	}
 
 	WIN32_FIND_DATAA file = { 0 };
@@ -116,12 +117,12 @@ static bool __stdcall ProcessDirA(const char* dir, const char* filter, const cha
 			continue;
 
 		memset(szPath, 0, MAX_PATH + 1);
-		strncpy(szPath, szRoot, MAX_PATH);
-		strncat(szPath, file.cFileName, MAX_PATH);
+		strncpy_s(szPath, szRoot, MAX_PATH);
+		strncat_s(szPath, file.cFileName, MAX_PATH);
 
 		if (file.dwFileAttributes & _A_SUBDIR)
 		{
-			strncat(szPath, "\\", MAX_PATH);
+			strncat_s(szPath, "\\", MAX_PATH);
 			ProcessDirA(szPath, filter, regExpress, callback);
 		}
 		else

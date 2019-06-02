@@ -1,6 +1,6 @@
-#include "stdafx.h"
-#include "defines.h"
-#include "Interface.h"
+#include "../stdafx.h"
+#include "../Common/defines.h"
+#include "../Text.h"
 
 
 ELIB_API char* __stdcall U2M(const wchar_t* str, UINT cp)

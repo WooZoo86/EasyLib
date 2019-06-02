@@ -13,11 +13,11 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Interface">
-      <UniqueIdentifier>{eb9c865e-8431-4156-b4a7-222e5beb967d}</UniqueIdentifier>
+    <Filter Include="API">
+      <UniqueIdentifier>{4e625447-2a29-4f22-a5b4-a26c09ab58fa}</UniqueIdentifier>
     </Filter>
     <Filter Include="Common">
-      <UniqueIdentifier>{d55098bc-f96e-41ff-994a-376925a1c511}</UniqueIdentifier>
+      <UniqueIdentifier>{4162a847-6479-4660-add4-dfd79a1b9d8e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -27,8 +27,8 @@
     <ClInclude Include="targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Interface.h">
-      <Filter>Interface</Filter>
+    <ClInclude Include="Patch.h">
+      <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Common\defines.h">
       <Filter>Common</Filter>
@@ -41,11 +41,11 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="API\Hook.cpp">
+      <Filter>API</Filter>
+    </ClCompile>
     <ClCompile Include="Common\defines.cpp">
       <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="WinEasyLib.cpp">
-      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
-#include "stdafx.h"
-#include "defines.h"
-#include "Interface.h"
+#include "../stdafx.h"
+#include "../Common/defines.h"
+#include "../Patch.h"
 
 
 static bool SafeCopyCode(DWORD addr, const BYTE* code, DWORD len, BYTE* saved)

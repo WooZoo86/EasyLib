@@ -1,0 +1,8 @@
+LIBRARY	PatchLib
+
+
+EXPORTS
+;Patch
+;;Hook
+InstallHook				@10000
+UnInstallHook			@10001
