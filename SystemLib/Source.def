@@ -1,0 +1,6 @@
+LIBRARY	SystemLib
+
+EXPORTS
+;System
+;;Privilege
+IsUACEnabled	@10001
